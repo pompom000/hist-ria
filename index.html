@@ -17,7 +17,8 @@ button{border:0;border-radius:12px;padding:12px 14px;background:#18181b;color:wh
 .flash{min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:18px;background:#18181b;color:#fff;padding:24px;font-size:21px;font-weight:700;cursor:pointer}
 .flash small{color:#d4d4d8;display:block;font-size:12px;margin-top:12px}
 .rule{border-left:5px solid #18181b;background:#fafafa;padding:12px 14px;border-radius:8px;margin:10px 0}
-.answerbox{font-size:16px;margin-top:10px;padding:12px;border-radius:10px;background:#f4f4f5}.pill{display:inline-block;background:#f4f4f5;border-radius:20px;padding:5px 9px;font-size:12px;margin:2px}
+.answerbox{font-size:16px;margin-top:10px;padding:12px;border-radius:10px;background:#f4f4f5}
+.subject{display:flex;align-items:center;gap:10px}.pill{display:inline-block;background:#f4f4f5;border-radius:20px;padding:5px 9px;font-size:12px;margin:2px}
 h2{font-size:20px}h3{font-size:16px;margin-bottom:6px}.formula{background:#fafafa;border-left:4px solid #18181b;padding:11px;margin:9px 0;font-family:ui-monospace,monospace;overflow:auto}
 .option{display:block;width:100%;text-align:left;background:#f4f4f5;color:#18181b;margin:8px 0}.correct{background:#dcfce7!important}.wrong{background:#fee2e2!important}
 nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:8px;z-index:6}nav button{background:transparent;color:#18181b;margin:0;font-size:12px}
@@ -87,97 +88,89 @@ app.innerHTML=`<div class="card"><span class="tag">Módulo ${m.id}</span><h2>${m
 }
 function finish(id){if(!state.done.includes(id))state.done.push(id);save();openLesson(id)}
 let current=[];
-function practice(){
-current=[...qs].sort(()=>Math.random()-.5).slice(0,7);
-app.innerHTML=`<div class="card"><h2>✏️ Exercícios</h2><p>Resolva e confira na hora. Você recebeu 7 questões aleatórias.</p></div>`+current.map((q,i)=>`<div class="card"><span class="tag">${q[0]}</span><h3>${i+1}. ${q[1]}</h3>${q.slice(2).map((o,j)=>`<button class="option" onclick="answer(this,${i},${j},'${o.replace(/'/g,"\\'")}')">${String.fromCharCode(65+j)}) ${o}</button>`).join("")}<div id="r${i}"></div></div>`).join("");
-}
-function answer(btn,i,j,val){
-let card=btn.parentElement;
-if(card.dataset.done)return;
-card.dataset.done=1;
-let correct=current[i][2];
-if(val===correct){btn.classList.add("correct");state.score++;document.getElementById("r"+i).innerHTML="<p>✅ Correto!</p>"}else{btn.classList.add("wrong");[...card.querySelectorAll(".option")].forEach(b=>{if(b.textContent.includes(correct))b.classList.add("correct")});document.getElementById("r"+i).innerHTML=`<p>❌ A resposta correta é <b>${correct}</b>.</p>`}
-save();
-}
-function review(){
-let pct=Math.round(state.done.length/modules.length*100);
-app.innerHTML=`<div class="card"><h2>📊 Seu progresso</h2><p>Módulos concluídos: <b>${state.done.length}/${modules.length}</b></p><div class="progress"><div class="bar" style="width:${pct}%"></div></div><p>Acertos acumulados nesta sessão: <b>${state.score}</b></p></div>
-<div class="card"><h3>Checklist</h3>${modules.map(m=>`<p>${state.done.includes(m.id)?"✅":"⬜"} ${m.title}</p>`).join("")}</div>
-<div class="card"><button class="alt" onclick="if(confirm('Zerar progresso?')){state={done:[],score:0};save();review()}">Zerar progresso</button></div>`;
+const subjectMap={
+  "Conjuntos Numéricos":["Conjuntos"],
+  "Intervalos":["Intervalos"],
+  "Função Constante e Identidade":["Funções","Revisão"],
+  "Função Afim":["Função Afim","Revisão"],
+  "Função Linear":["Linear","Revisão"],
+  "Função Quadrática":["Quadrática","Revisão"],
+  "Função Exponencial":["Exponencial","Revisão"],
+  "Função Logarítmica":["Logaritmo","Revisão"],
+  "Limites":["Limite","Revisão"],
+  "Global":null
+};
+
+function practiceMenu(){
+  app.innerHTML=`<div class="card"><span class="tag">Banco de questões</span>
+  <h2>✏️ Perguntas de múltipla escolha</h2>
+  <p>Escolha uma matéria ou <b>Global</b> para misturar tudo.</p></div>`+
+  Object.keys(subjectMap).map((name,i)=>`<div class="card"><div class="module">
+  <div class="num">${name==="Global"?"★":i+1}</div><div><h3>${name}</h3>
+  <small>${name==="Global"?"Questões de todas as matérias":"Questões somente desta matéria"}</small></div></div>
+  <button onclick="startPractice('${name.replace(/'/g,"\\'")}')">Começar</button></div>`).join("");
 }
 
-const rules=[
-["Conjuntos","N ⊂ Z ⊂ Q ⊂ R","Naturais estão nos inteiros; inteiros estão nos racionais; racionais estão nos reais."],
-["Conjuntos","I ⊂ R","Irracionais são reais, mas não podem ser escritos como fração de inteiros."],
-["Conjuntos","√25 = 5","Quando a raiz é exata e resulta em natural, procure o menor conjunto: N."],
-["Intervalos","(a,b)","Parênteses: os extremos NÃO pertencem ao intervalo."],
-["Intervalos","[a,b]","Colchetes: os extremos pertencem ao intervalo."],
-["Intervalos","[a,b)","Entra o a; não entra o b."],
-["Intervalos","(a,b]","Não entra o a; entra o b."],
-["Intervalos","Se multiplicar/dividir por negativo → inverte o sinal","Ex.: −2x > 6 → x < −3."],
-["Função Afim","f(x)=ax+b","a é o coeficiente angular; b é o coeficiente linear."],
-["Função Afim","Raiz: x=−b/a","Para achar a raiz, faça f(x)=0."],
-["Função Linear","f(x)=ax","É uma função afim com b=0 e passa pela origem."],
-["Quadrática","Δ=b²−4ac","O discriminante ajuda a descobrir a quantidade de raízes reais."],
-["Quadrática","x=(−b±√Δ)/(2a)","Fórmula de Bhaskara."],
-["Quadrática","xv=−b/(2a)","Coordenada x do vértice."],
-["Exponencial","f(x)=aˣ","a>0 e a≠1."],
-["Exponencial","a>1 → crescente","Quanto maior x, maior aˣ."],
-["Exponencial","0<a<1 → decrescente","Quanto maior x, menor aˣ."],
-["Logaritmo","logₐ(x)=y ⇔ aʸ=x","Logaritmo e exponencial são operações inversas."],
-["Logaritmo","logₐ(xy)=logₐx+logₐy","Produto vira soma."],
-["Logaritmo","logₐ(x/y)=logₐx−logₐy","Quociente vira subtração."],
-["Limite","lim(x→a) f(x)","Pergunta para qual valor f(x) se aproxima quando x se aproxima de a."],
-["Limite","Em função contínua: substitua x por a","Ex.: lim(x→3)(x+2)=5."]
-];
+function startPractice(subject){
+  let pool;
+  if(subject==="Global"){
+    pool=[...qs];
+  }else{
+    const cats=subjectMap[subject];
+    pool=qs.filter(q=>cats.includes(q[0]));
+  }
+  if(pool.length<5) pool=[...qs.filter(q=>q[0]!== "Revisão"),...pool];
+  current=[...pool].sort(()=>Math.random()-.5).slice(0,10);
+  app.innerHTML=`<div class="card"><span class="tag">${subject}</span>
+  <h2>✏️ ${subject==="Global"?"Treino Global":"Treino de "+subject}</h2>
+  <p>${current.length} questões. Escolha uma alternativa e veja a correção na hora.</p>
+  <button class="alt" onclick="practiceMenu()">← Escolher outra matéria</button></div>`+
+  current.map((q,i)=>`<div class="card"><span class="tag">${q[0]}</span>
+  <h3>${i+1}. ${q[1]}</h3>${q.slice(2).map((o,j)=>`<button class="option" onclick="answer(this,${i},${j},'${o.replace(/'/g,"\\'")}')">${String.fromCharCode(65+j)}) ${o}</button>`).join("")}<div id="r${i}"></div></div>`).join("");
+}
 
-let cardIndex=0, cardSide=0;
-function cards(){
+function practice(){ practiceMenu(); }
+
+function cardsMenu(){
+  const names=Object.keys(subjectMap).filter(x=>x!=="Global");
+  app.innerHTML=`<div class="card"><span class="tag">Memorização</span>
+  <h2>🃏 Cartões de regras</h2>
+  <p>Escolha uma matéria ou veja cartões de <b>todas as matérias</b>.</p>
+  <button onclick="startCards('Global')">🌐 Todas as matérias</button></div>`+
+  names.map((name,i)=>`<div class="card"><div class="module"><div class="num">${i+1}</div>
+  <div><h3>${name}</h3><small>Cartões de regras e fórmulas</small></div></div>
+  <button onclick="startCards('${name.replace(/'/g,"\\'")}')">Ver cartões</button></div>`).join("");
+}
+
+function startCards(subject){
+  let list;
+  if(subject==="Global") list=[...rules];
+  else {
+    const cats=subjectMap[subject];
+    list=rules.filter(r=>cats.includes(r[0]));
+  }
+  if(!list.length) list=[...rules];
+  window.activeRules=list;
   cardIndex=0; cardSide=0;
   renderCard();
 }
+
+function cards(){ cardsMenu(); }
+
 function renderCard(){
-  const r=rules[cardIndex];
-  app.innerHTML=`<div class="card"><span class="tag">Cartões de memória</span>
-  <h2>🃏 Memorize as regras</h2><p>Toque no cartão para virar e ver a explicação.</p>
+  const list=window.activeRules||rules;
+  const r=list[cardIndex % list.length];
+  app.innerHTML=`<div class="card"><span class="tag">Cartões — ${r[0]}</span>
+  <h2>🃏 Memorize a regra</h2><p>Toque no cartão para virar e ver a explicação.</p>
   <div class="flash" onclick="flipCard()">${cardSide?`${r[2]}<small>Toque para voltar à regra</small>`:`${r[0]}<br><br>${r[1]}<small>Toque para ver a explicação</small>`}</div>
-  <p style="text-align:center"><b>${cardIndex+1}</b> de ${rules.length}</p>
+  <p style="text-align:center"><b>${cardIndex+1}</b> de ${list.length}</p>
   <button onclick="prevCard()">← Anterior</button><button onclick="nextCard()">Próximo →</button>
-  <button class="alt" onclick="practice()">✏️ Ir para perguntas</button></div>`;
+  <button class="alt" onclick="cardsMenu()">← Escolher matéria</button></div>`;
 }
+
 function flipCard(){cardSide=cardSide?0:1;renderCard()}
-function nextCard(){cardIndex=(cardIndex+1)%rules.length;cardSide=0;renderCard()}
-function prevCard(){cardIndex=(cardIndex-1+rules.length)%rules.length;cardSide=0;renderCard()}
-
-const moreQs=[
-["Conjuntos","Qual é o menor conjunto de 0?","N","Z","Q","R"],
-["Conjuntos","Qual é o menor conjunto de −8?","Z","N","Q","I"],
-["Conjuntos","Qual é o menor conjunto de π?","I","Q","Z","N"],
-["Conjuntos","Qual é o menor conjunto de 0,25?","Q","I","Z","N"],
-["Intervalos","Qual intervalo representa −2<x≤4?","(−2,4]","[−2,4)","(−2,4)","[−2,4]"],
-["Intervalos","Se −3x<9, então:","x>−3","x<−3","x>3","x<3"],
-["Intervalos","A interseção de [1,5] e [3,7] é:","[3,5]","[1,7]","[1,3]","[5,7]"],
-["Função Afim","Em f(x)=−2x+5, o coeficiente angular é:","−2","2","5","−5"],
-["Função Afim","Em f(x)=3x−7, o coeficiente linear é:","−7","3","7","−3"],
-["Linear","Qual função é linear?","f(x)=4x","f(x)=4x+1","f(x)=x²","f(x)=4"],
-["Quadrática","Se Δ=0, uma função quadrática possui:","uma raiz real","duas raízes reais distintas","nenhuma raiz real","três raízes reais"],
-["Quadrática","Se a<0, a parábola tem concavidade:","para baixo","para cima","horizontal","vertical"],
-["Exponencial","Qual função é crescente?","2ˣ","(1/2)ˣ","−2ˣ","0ˣ"],
-["Exponencial","2ˣ=16. Então x é:","4","2","8","16"],
-["Logaritmo","log₁₀(1000)=?","3","2","10","100"],
-["Logaritmo","log₂(4·8) é igual a:","5","6","8","12"],
-["Logaritmo","Para logₐ(x), o domínio exige:","x>0","x<0","x≥0","x≠0"],
-["Limite","lim(x→2)(3x+1)=?","7","6","5","4"],
-["Limite","Se x→5 e f(x)→−2, então o limite é:","−2","5","2","−5"],
-["Revisão","Qual é a raiz de f(x)=x−9?","9","−9","0","1"]
-];
-qs.push(...moreQs);
-
-function practice(){
- current=[...qs].sort(()=>Math.random()-.5).slice(0,10);
- app.innerHTML=`<div class="card"><h2>✏️ Perguntas de múltipla escolha</h2><p>10 questões aleatórias. Escolha uma alternativa e veja a correção imediatamente.</p><p><span class="pill">🎯 Treino</span><span class="pill">📚 Cálculo 1</span></p></div>`+
- current.map((q,i)=>`<div class="card"><span class="tag">${q[0]}</span><h3>${i+1}. ${q[1]}</h3>${q.slice(2).map((o,j)=>`<button class="option" onclick="answer(this,${i},${j},'${o.replace(/'/g,"\\'")}')">${String.fromCharCode(65+j)}) ${o}</button>`).join("")}<div id="r${i}"></div></div>`).join("");
-}
+function nextCard(){const list=window.activeRules||rules;cardIndex=(cardIndex+1)%list.length;cardSide=0;renderCard()}
+function prevCard(){const list=window.activeRules||rules;cardIndex=(cardIndex-1+list.length)%list.length;cardSide=0;renderCard()}
 
 home();
 </script>
