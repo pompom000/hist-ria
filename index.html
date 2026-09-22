@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#11131a">
+<meta name="theme-color" content="#171717">
 <title>Cálculo 1 — Estudo</title>
 <style>
 :root{
@@ -77,28 +77,21 @@ body.dark .progress{background:#303442}
 <button onclick="home()">🏠<br>Início</button>
 <button onclick="lessons()">📚<br>Aulas</button>
 <button onclick="practice()">✏️<br>Exercícios</button>
-<button onclick="progress()">📊<br>Progresso</button>
+<button onclick="review()">📊<br>Progresso</button>
 <button onclick="cards()">🃏<br>Cartões</button>
 </nav>
 <script>
 const modules=[
-{id:1,title:"Conjuntos Numéricos",desc:"N, Z, Q, I e R; classificação de números.",topics:["Naturais (N)","Inteiros (Z)","Racionais (Q)","Irracionais (I)","Reais (R)","Como encontrar o menor conjunto"],lesson:`<p>Os conjuntos numéricos organizam os números. Pense neles como caixas: alguns números pertencem a várias caixas, mas a questão pode pedir a <b>menor</b> caixa possível.</p>
-<div class="formula">N ⊂ Z ⊂ Q ⊂ R<br>I ⊂ R</div>
-<p><b>N:</b> 0, 1, 2, 3... (alguns livros começam em 1).<br><b>Z:</b> ..., −2, −1, 0, 1, 2...<br><b>Q:</b> números que podem ser escritos como a/b, com a,b inteiros e b≠0.<br><b>I:</b> não podem ser escritos como fração de inteiros, como √2 e π.<br><b>R:</b> reúne racionais e irracionais.</p>
-<h3>Exemplo</h3><p>−8 é inteiro, então também é racional e real. O menor conjunto é <b>Z</b>.<br>−3/5 é racional: menor conjunto <b>Q</b>.<br>√2 é irracional: menor conjunto <b>I</b>.<br>√25 = 5: menor conjunto <b>N</b>.</p>`},
-{id:2,title:"Intervalos",desc:"Representação, união, interseção e resolução de desigualdades.",topics:["Aberto e fechado","Intervalos mistos","União","Interseção","Desigualdades","Inequações simples"],lesson:`<p>Intervalo representa todos os números entre dois limites.</p>
-<div class="formula">(a,b) → a &lt; x &lt; b<br>[a,b] → a ≤ x ≤ b<br>[a,b) → a ≤ x &lt; b<br>(a,b] → a &lt; x ≤ b</div>
-<p><b>Regra visual:</b> parêntese = extremo não entra. Colchete = extremo entra.</p>
-<h3>Como executar a conta</h3><p>Exemplo: 2x + 4 &gt; 10.<br>2x &gt; 6 → x &gt; 3.<br>Resposta: <b>(3,+∞)</b>.</p>
-<p>Se multiplicar ou dividir uma desigualdade por número negativo, <b>inverta o sinal</b>.</p>`},
-{id:3,title:"Função Constante e Identidade",desc:"Base para entender gráficos e funções.",topics:["f(x)=c","f(x)=x","Domínio","Imagem","Gráfico"],lesson:`<p><b>Função constante:</b> f(x)=c. O resultado é sempre o mesmo.</p><div class="formula">f(x)=5 → f(1)=5, f(100)=5</div><p>Seu gráfico é uma reta horizontal.</p><p><b>Função identidade:</b> f(x)=x. Cada entrada retorna ela mesma. Seu gráfico é a reta y=x.</p>`},
-{id:4,title:"Função Afim",desc:"f(x)=ax+b, raiz, coeficientes e gráfico.",topics:["Coeficiente angular","Coeficiente linear","Raiz","Crescimento","Gráfico"],lesson:`<div class="formula">f(x)=ax+b</div><p><b>a</b> indica a inclinação. <b>b</b> é onde a reta corta o eixo y.</p><p>Para achar a raiz, faça f(x)=0:</p><div class="formula">ax+b=0 → x=−b/a</div><h3>Exemplo</h3><p>f(x)=2x−6 → 2x−6=0 → x=3.</p>`},
-{id:5,title:"Função Linear",desc:"Caso especial da função afim.",topics:["f(x)=ax","Origem","Proporcionalidade","Gráfico"],lesson:`<div class="formula">f(x)=ax</div><p>É uma função afim com b=0. Portanto, seu gráfico passa pela origem (0,0).</p><p>Exemplo: f(x)=3x. Se x=4, então f(4)=12.</p>`},
-{id:6,title:"Função Quadrática",desc:"Parábola, raízes, vértice, discriminante e gráfico.",topics:["ax²+bx+c","Δ","Bhaskara","Vértice","Concavidade"],lesson:`<div class="formula">f(x)=ax²+bx+c, a≠0<br>Δ=b²−4ac<br>x=(−b±√Δ)/(2a)</div><p>Se a&gt;0, a parábola tem concavidade para cima. Se a&lt;0, para baixo.</p><p>O vértice pode ser encontrado por:</p><div class="formula">xv=−b/(2a), &nbsp; yv=f(xv)</div><p>Se Δ&gt;0 há duas raízes reais; Δ=0 uma raiz real; Δ&lt;0 nenhuma raiz real.</p>`},
-{id:7,title:"Função Exponencial",desc:"Potências, crescimento e decaimento.",topics:["a^x","Base","Crescimento","Decaimento","Equações"],lesson:`<div class="formula">f(x)=a^x, a&gt;0 e a≠1</div><p>Se a&gt;1, a função cresce. Se 0&lt;a&lt;1, decresce.</p><p>Exemplo: 2^3=8. Em equações com mesma base, compare os expoentes: 2^x=2^5 → x=5.</p>`},
-{id:8,title:"Função Logarítmica",desc:"Logaritmos como operação inversa da exponencial.",topics:["Definição","Propriedades","Equações","Domínio","Gráfico"],lesson:`<div class="formula">logₐ(x)=y ⇔ a^y=x</div><p>Condições: a&gt;0, a≠1 e x&gt;0.</p><h3>Propriedades principais</h3><div class="formula">logₐ(xy)=logₐx+logₐy<br>logₐ(x/y)=logₐx−logₐy<br>logₐ(x^k)=k·logₐx</div><p>Exemplo: log₂(8)=3 porque 2³=8.</p>`},
-{id:9,title:"Noções Intuitivas de Limite",desc:"A ideia de aproximar-se de um valor.",topics:["Limite","Aproximação","Limite lateral","Continuidade"],lesson:`<p>Limite pergunta: <b>“Para qual valor f(x) está se aproximando quando x se aproxima de um número?”</b></p><div class="formula">lim(x→a) f(x)</div><p>Exemplo: se f(x)=x+2, quando x→3, f(x)→5.</p><p>Em funções simples, muitas vezes basta substituir x por a. Em expressões que geram 0/0, são necessárias técnicas como fatoração e simplificação.</p>`},
-{id:10,title:"Revisão de Cálculo 1",desc:"Mistura dos conteúdos estudados.",topics:["Classificação","Intervalos","Funções","Equações","Limites"],lesson:`<p>Use esta revisão para conectar os assuntos. Primeiro identifique o tipo de problema; depois escolha a regra adequada.</p><ol><li>Classifique números.</li><li>Resolva desigualdades e escreva intervalos.</li><li>Identifique o tipo de função.</li><li>Resolva raízes/valores.</li><li>Calcule limites simples.</li></ol>`}
+{id:1,title:"Conjuntos Numéricos",desc:"N, Z, Q, I e R; classificação de números.",topics:["Naturais (N)","Inteiros (Z)","Racionais (Q)","Irracionais (I)","Reais (R)","Como encontrar o menor conjunto"],lesson:`<p><b>Conjuntos numéricos</b> organizam os números. O objetivo principal é reconhecer o <b>menor conjunto</b>.</p><div class="formula">N ⊂ Z ⊂ Q ⊂ R &nbsp;&nbsp; e &nbsp;&nbsp; I ⊂ R</div><h3>Naturais (N)</h3><p>N={0,1,2,3,...}.</p><h3>Inteiros (Z)</h3><p>Z={...,−3,−2,−1,0,1,2,3,...}.</p><h3>Racionais (Q)</h3><p>Podem ser escritos como a/b, com a,b inteiros e b≠0. Exemplos: 1/2, −3/5, 4 e 0,25.</p><h3>Irracionais (I)</h3><p>Não podem ser escritos como fração de inteiros: √2, √3, π.</p><h3>Reais (R)</h3><p>R=Q∪I.</p><h3>Classificação</h3><p>−8→<b>Z</b>; −3/5→<b>Q</b>; √2→<b>I</b>; √25=5→<b>N</b>; π→<b>I</b>; 3,1415→<b>Q</b>. Escolha o menor conjunto.</p>`},
+{id:2,title:"Intervalos",desc:"Representação, união, interseção e resolução de desigualdades.",topics:["Aberto e fechado","Intervalos mistos","União","Interseção","Desigualdades","Inequações simples"],lesson:`<p><b>Intervalos</b> representam números entre limites.</p><div class="formula">(a,b) → a&lt;x&lt;b<br>[a,b] → a≤x≤b<br>[a,b) → a≤x&lt;b<br>(a,b] → a&lt;x≤b</div><p>Parêntese não inclui; colchete inclui. No infinito usamos parênteses.</p><h3>Desigualdades</h3><p>2x+4&gt;10 → x&gt;3 → <b>(3,+∞)</b>.</p><p>−3x&lt;9 → dividindo por −3, inverta o sinal → <b>x&gt;−3</b>.</p><h3>União e interseção</h3><p>∪ junta valores; ∩ mantém os comuns.</p><div class="formula">[1,5] ∩ [3,7] = [3,5]</div><p>2&lt;x≤6 → <b>(2,6]</b>.</p>`},
+{id:3,title:"Função Constante e Identidade",desc:"Base para entender gráficos e funções.",topics:["f(x)=c","f(x)=x","Domínio","Imagem","Gráfico"],lesson:`<p>Uma <b>função</b> relaciona cada entrada a uma única saída.</p><div class="formula">y=f(x)</div><h3>Domínio, contradomínio e imagem</h3><p>Domínio = entradas permitidas; contradomínio = conjunto de chegada; imagem = saídas que aparecem.</p><h3>Constante</h3><div class="formula">f(x)=c</div><p>Resultado sempre c; gráfico horizontal.</p><h3>Identidade</h3><div class="formula">f(x)=x</div><p>Retorna a própria entrada; gráfico y=x.</p><h3>Valor</h3><p>f(x)=x+3 → f(2)=5.</p>`},
+{id:4,title:"Função Afim",desc:"f(x)=ax+b, raiz, coeficientes e gráfico.",topics:["Coeficiente angular","Coeficiente linear","Raiz","Crescimento","Gráfico"],lesson:`<p><b>Função afim:</b></p><div class="formula">f(x)=ax+b</div><p>a é o coeficiente angular; b é o linear. a&gt;0: crescente; a&lt;0: decrescente.</p><h3>Raiz</h3><div class="formula">x=−b/a</div><p>Ex.: 2x−6=0 → x=3.</p><h3>Taxa de variação</h3><div class="formula">a=(y₂−y₁)/(x₂−x₁)</div><p>Para o gráfico, use a raiz e (0,b) ou dois pontos.</p>`},
+{id:5,title:"Função Linear",desc:"Caso especial da função afim.",topics:["f(x)=ax","Origem","Proporcionalidade","Gráfico"],lesson:`<p><b>Função linear:</b></p><div class="formula">f(x)=ax</div><p>É afim com b=0 e passa pela origem.</p><p>Ex.: f(x)=3x → f(4)=12.</p><p>Representa proporcionalidade direta quando y=ax.</p>`},
+{id:6,title:"Função Quadrática",desc:"Parábola, raízes, vértice, discriminante e gráfico.",topics:["ax²+bx+c","Δ","Bhaskara","Vértice","Concavidade"],lesson:`<p><b>Função quadrática:</b></p><div class="formula">f(x)=ax²+bx+c, a≠0</div><p>a&gt;0: concavidade para cima; a&lt;0: para baixo.</p><h3>Discriminante</h3><div class="formula">Δ=b²−4ac</div><p>Δ&gt;0: duas raízes; Δ=0: uma; Δ&lt;0: nenhuma raiz real.</p><h3>Bhaskara</h3><div class="formula">x=(−b±√Δ)/(2a)</div><h3>Vértice</h3><div class="formula">xᵥ=−b/(2a), yᵥ=f(xᵥ)</div><p>O eixo de simetria é x=xᵥ. O vértice pode ser máximo ou mínimo.</p>`},
+{id:7,title:"Função Exponencial",desc:"Potências, crescimento e decaimento.",topics:["a^x","Base","Crescimento","Decaimento","Equações"],lesson:`<p><b>Função exponencial:</b></p><div class="formula">f(x)=aˣ, a&gt;0 e a≠1</div><p>a&gt;1: crescente; 0&lt;a&lt;1: decrescente.</p><h3>Potências</h3><div class="formula">aᵐ·aⁿ=aᵐ⁺ⁿ<br>aᵐ/aⁿ=aᵐ⁻ⁿ<br>(aᵐ)ⁿ=aᵐⁿ<br>a⁰=1<br>a⁻ⁿ=1/aⁿ</div><p>2ˣ=2⁵ → x=5. Quando as bases não podem ser igualadas, use logaritmos.</p><p>Aplicações: crescimento, decaimento e juros compostos.</p>`},
+{id:8,title:"Função Logarítmica",desc:"Logaritmos como operação inversa da exponencial.",topics:["Definição","Propriedades","Equações","Domínio","Gráfico"],lesson:`<p><b>Logaritmo</b> é a operação inversa da exponenciação.</p><div class="formula">logₐ(x)=y ⇔ aʸ=x</div><p>a&gt;0, a≠1 e x&gt;0.</p><p>log₂(8)=3; log₁₀(1000)=3.</p><h3>Propriedades</h3><div class="formula">logₐ(xy)=logₐx+logₐy<br>logₐ(x/y)=logₐx−logₐy<br>logₐ(xᵏ)=k·logₐx<br>logₐ(1)=0<br>logₐ(a)=1</div><h3>Mudança de base</h3><div class="formula">logₐ(b)=log_c(b)/log_c(a)</div><p>O argumento do logaritmo deve ser positivo.</p>`},
+{id:9,title:"Noções Intuitivas de Limite",desc:"A ideia de aproximar-se de um valor.",topics:["Limite","Aproximação","Limite lateral","Continuidade"],lesson:`<p><b>Limite</b> indica para qual valor uma função se aproxima.</p><div class="formula">lim(x→a) f(x)</div><h3>Substituição</h3><p>Em funções contínuas: lim(x→3)(x+2)=5.</p><h3>Laterais</h3><div class="formula">lim(x→a⁻)f(x) → esquerda<br>lim(x→a⁺)f(x) → direita</div><p>O limite existe quando os dois lados coincidem.</p><h3>0/0</h3><p>É indeterminação; tente fatorar e simplificar.</p><div class="formula">lim(x→2)(x²−4)/(x−2)=lim(x→2)(x+2)=4</div><p>Continuidade: intuitivamente, sem “quebra” e com limite igual ao valor da função.</p>`},
+{id:10,title:"Revisão de Cálculo 1",desc:"Mistura dos conteúdos estudados.",topics:["Classificação","Intervalos","Funções","Equações","Limites"],lesson:`<p><b>Revisão geral de Cálculo 1.</b></p><h3>Checklist</h3><ol><li>N, Z, Q, I e R.</li><li>Intervalos e inequações.</li><li>Funções e seus gráficos.</li><li>Afim e linear.</li><li>Quadrática, Δ, Bhaskara e vértice.</li><li>Potências e exponenciais.</li><li>Logaritmos e propriedades.</li><li>Limites, laterais e 0/0.</li><li>Exercícios mistos.</li></ol><h3>Método</h3><p>Identifique → escolha a regra → substitua → resolva linha a linha → confira.</p>`}
 ];
 
 const qs=[
@@ -115,50 +108,18 @@ const qs=[
 ["Limite","lim(x→3)(x+2) =","5","3","2","6"]
 ];
 
-const rules=[
-["Conjuntos Numéricos","N ⊂ Z ⊂ Q ⊂ R","Naturais estão nos inteiros; inteiros estão nos racionais; racionais estão nos reais."],
-["Conjuntos Numéricos","I ⊂ R","Irracionais são reais, mas não podem ser escritos como fração de inteiros."],
-["Conjuntos Numéricos","√25 = 5","Quando a raiz é exata e resulta em natural, procure o menor conjunto: N."],
-["Intervalos","(a,b)","Parênteses: os extremos não pertencem ao intervalo."],
-["Intervalos","[a,b]","Colchetes: os extremos pertencem ao intervalo."],
-["Intervalos","[a,b)","Entra o a; não entra o b."],
-["Intervalos","(a,b]","Não entra o a; entra o b."],
-["Intervalos","Se multiplicar/dividir por negativo → inverte o sinal","Ex.: −2x > 6 → x < −3."],
-["Função Afim","f(x)=ax+b","a é o coeficiente angular; b é o coeficiente linear."],
-["Função Afim","x=−b/a","Para achar a raiz da função afim, faça f(x)=0."],
-["Função Linear","f(x)=ax","É uma função afim com b=0 e passa pela origem."],
-["Função Quadrática","Δ=b²−4ac","O discriminante ajuda a descobrir a quantidade de raízes reais."],
-["Função Quadrática","x=(−b±√Δ)/(2a)","Fórmula de Bhaskara."],
-["Função Quadrática","xv=−b/(2a)","Coordenada x do vértice."],
-["Função Exponencial","f(x)=aˣ","a>0 e a≠1."],
-["Função Exponencial","a>1 → crescente","Quanto maior x, maior aˣ."],
-["Função Exponencial","0<a<1 → decrescente","Quanto maior x, menor aˣ."],
-["Função Logarítmica","logₐ(x)=y ⇔ aʸ=x","Logaritmo e exponencial são operações inversas."],
-["Função Logarítmica","logₐ(xy)=logₐx+logₐy","Produto vira soma."],
-["Função Logarítmica","logₐ(x/y)=logₐx−logₐy","Quociente vira subtração."],
-["Limites","lim(x→a) f(x)","Pergunta para qual valor f(x) se aproxima quando x se aproxima de a."],
-["Limites","lim(x→3)(x+2)=5","Em funções contínuas simples, substitua x pelo valor do limite."]
-];
-
 let state=JSON.parse(localStorage.getItem("calc1")||'{"done":[],"score":0}');
 function save(){localStorage.setItem("calc1",JSON.stringify(state))}
 function applyTheme(){
-  const dark=localStorage.getItem("calc1_theme_v8")!=="light";
+  const dark=localStorage.getItem("calc1_theme")==="dark";
   document.body.classList.toggle("dark",dark);
   const b=document.getElementById("themeBtn");
   if(b)b.textContent=dark?"☀️":"🌙";
 }
 function toggleTheme(){
   const dark=!document.body.classList.contains("dark");
-  localStorage.setItem("calc1_theme_v8",dark?"dark":"light");
+  localStorage.setItem("calc1_theme",dark?"dark":"light");
   applyTheme();
-}
-function progress(){
- const pct=Math.round(state.done.length/modules.length*100);
- app.innerHTML=`<div class="card hero"><span class="tag">Seu progresso</span><h2>📊 Minha evolução</h2><p style="color:var(--muted)">Acompanhe as matérias estudadas e continue sua trilha.</p><div class="progress"><div class="bar" style="width:${pct}%"></div></div><p><b>${pct}%</b> concluído</p></div>
- <div class="mini-grid"><div class="mini"><strong>📚 ${state.done.length}/${modules.length}</strong><span>módulos concluídos</span></div><div class="mini"><strong>🎯 ${state.score}</strong><span>acertos</span></div><div class="mini"><strong>🃏 ${rules.length}</strong><span>regras para revisar</span></div><div class="mini"><strong>✏️ ${qs.length}</strong><span>questões</span></div></div>
- <div class="card"><h3>📚 Progresso por matéria</h3>${modules.map(m=>`<div style="margin:12px 0"><div style="display:flex;justify-content:space-between"><b>${m.title}</b><span>${state.done.includes(m.id)?'100%':'0%'}</span></div><div class="progress"><div class="bar" style="width:${state.done.includes(m.id)?100:0}%"></div></div></div>`).join('')}</div>
- <div class="card"><h3>🧭 Continue estudando</h3><p style="color:var(--muted)">Abra a trilha para escolher sua próxima aula.</p><button onclick="lessons()">Abrir trilha →</button></div>`;
 }
 function home(){
 let pct=Math.round(state.done.length/modules.length*100);
@@ -180,7 +141,6 @@ app.innerHTML=`<div class="card hero">
 <button onclick="lessons()">Ver aulas →</button>
 <button class="alt" onclick="cards()">🃏 Memorizar</button>
 </div>
-<div class="card"><span class="tag">Sua trilha</span><h3>🗺️ 10 etapas de Cálculo 1</h3><div><span class="pill">1. Conjuntos Numéricos</span><span class="pill">2. Intervalos</span><span class="pill">3. Função Constante e Identidade</span><span class="pill">4. Função Afim</span><span class="pill">5. Função Linear</span><span class="pill">6. Função Quadrática</span><span class="pill">7. Função Exponencial</span><span class="pill">8. Função Logarítmica</span><span class="pill">9. Limites</span><span class="pill">10. Revisão</span></div><button class="alt" onclick="lessons()">Abrir trilha →</button></div><div class="card"><span class="tag">Conteúdo completo</span><h3>📚 Tudo que você vai estudar</h3><p style="color:var(--muted);font-size:13px">Conjuntos Numéricos • Intervalos • Função Constante e Identidade • Função Afim • Função Linear • Função Quadrática • Função Exponencial • Função Logarítmica • Limites</p><button class="alt" onclick="lessons()">Ver conteúdos →</button></div>
 <div class="card"><h3>⚡ Praticar agora</h3><p style="color:var(--muted);font-size:13px">Escolha uma matéria ou faça um treino global.</p>
 <button onclick="practice()">Fazer perguntas →</button></div>`;
 }
@@ -279,7 +239,6 @@ function nextCard(){const list=window.activeRules||rules;cardIndex=(cardIndex+1)
 function prevCard(){const list=window.activeRules||rules;cardIndex=(cardIndex-1+list.length)%list.length;cardSide=0;renderCard()}
 
 home();
-if(!localStorage.getItem("calc1_theme_v8")) localStorage.setItem("calc1_theme_v8","dark");
 applyTheme();
 </script>
 </body></html>

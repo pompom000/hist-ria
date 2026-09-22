@@ -1,1 +1,2 @@
-Cálculo 1 — Jornada de estudos. Abra index.html ou publique no GitHub Pages.
+CALCULO 1 APP v6 - Conteudo completo
+Substitua o index.html do repositorio GitHub pelo index.html deste ZIP. O GitHub Pages atualizara o mesmo endereco.
