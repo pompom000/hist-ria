@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<title>Cálculo 1 — Estudo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f4f5;color:#18181b}
+header{background:#18181b;color:#fff;padding:20px 18px 18px;position:sticky;top:0;z-index:5}
+h1{font-size:22px;margin:0 0 5px}.sub{opacity:.75;font-size:13px}
+main{max-width:760px;margin:auto;padding:16px 14px 90px}.card{background:white;border-radius:16px;padding:17px;margin:12px 0;box-shadow:0 2px 10px #0000000d}
+.progress{height:10px;background:#e4e4e7;border-radius:10px;overflow:hidden}.bar{height:100%;background:#18181b;width:0}
+.module{display:flex;gap:12px;align-items:center}.num{width:42px;height:42px;border-radius:12px;background:#18181b;color:white;display:grid;place-items:center;font-weight:700}
+button{border:0;border-radius:12px;padding:12px 14px;background:#18181b;color:white;font-weight:650;cursor:pointer;margin:5px 4px 5px 0}button.alt{background:#e4e4e7;color:#18181b}
+.hidden{display:none}.pill{display:inline-block;background:#f4f4f5;border-radius:20px;padding:5px 9px;font-size:12px;margin:2px}
+h2{font-size:20px}h3{font-size:16px;margin-bottom:6px}.formula{background:#fafafa;border-left:4px solid #18181b;padding:11px;margin:9px 0;font-family:ui-monospace,monospace;overflow:auto}
+.option{display:block;width:100%;text-align:left;background:#f4f4f5;color:#18181b;margin:8px 0}.correct{background:#dcfce7!important}.wrong{background:#fee2e2!important}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:8px;z-index:6}nav button{background:transparent;color:#18181b;margin:0;font-size:12px}
+small{color:#71717a}.tag{font-size:11px;font-weight:700;text-transform:uppercase;color:#52525b}
+</style>
+</head>
+<body>
+<header><h1>📘 Cálculo 1 — Estudo</h1><div class="sub">Aulas + exemplos + exercícios + progresso</div></header>
+<main id="app"></main>
+<nav>
+<button onclick="home()">🏠<br>Início</button>
+<button onclick="lessons()">📚<br>Aulas</button>
+<button onclick="practice()">✏️<br>Exercícios</button>
+<button onclick="review()">📊<br>Progresso</button>
+</nav>
+<script>
+const modules=[
+{id:1,title:"Conjuntos Numéricos",desc:"N, Z, Q, I e R; classificação de números.",topics:["Naturais (N)","Inteiros (Z)","Racionais (Q)","Irracionais (I)","Reais (R)","Como encontrar o menor conjunto"],lesson:`<p>Os conjuntos numéricos organizam os números. Pense neles como caixas: alguns números pertencem a várias caixas, mas a questão pode pedir a <b>menor</b> caixa possível.</p>
+<div class="formula">N ⊂ Z ⊂ Q ⊂ R<br>I ⊂ R</div>
+<p><b>N:</b> 0, 1, 2, 3... (alguns livros começam em 1).<br><b>Z:</b> ..., −2, −1, 0, 1, 2...<br><b>Q:</b> números que podem ser escritos como a/b, com a,b inteiros e b≠0.<br><b>I:</b> não podem ser escritos como fração de inteiros, como √2 e π.<br><b>R:</b> reúne racionais e irracionais.</p>
+<h3>Exemplo</h3><p>−8 é inteiro, então também é racional e real. O menor conjunto é <b>Z</b>.<br>−3/5 é racional: menor conjunto <b>Q</b>.<br>√2 é irracional: menor conjunto <b>I</b>.<br>√25 = 5: menor conjunto <b>N</b>.</p>`},
+{id:2,title:"Intervalos",desc:"Representação, união, interseção e resolução de desigualdades.",topics:["Aberto e fechado","Intervalos mistos","União","Interseção","Desigualdades","Inequações simples"],lesson:`<p>Intervalo representa todos os números entre dois limites.</p>
+<div class="formula">(a,b) → a &lt; x &lt; b<br>[a,b] → a ≤ x ≤ b<br>[a,b) → a ≤ x &lt; b<br>(a,b] → a &lt; x ≤ b</div>
+<p><b>Regra visual:</b> parêntese = extremo não entra. Colchete = extremo entra.</p>
+<h3>Como executar a conta</h3><p>Exemplo: 2x + 4 &gt; 10.<br>2x &gt; 6 → x &gt; 3.<br>Resposta: <b>(3,+∞)</b>.</p>
+<p>Se multiplicar ou dividir uma desigualdade por número negativo, <b>inverta o sinal</b>.</p>`},
+{id:3,title:"Função Constante e Identidade",desc:"Base para entender gráficos e funções.",topics:["f(x)=c","f(x)=x","Domínio","Imagem","Gráfico"],lesson:`<p><b>Função constante:</b> f(x)=c. O resultado é sempre o mesmo.</p><div class="formula">f(x)=5 → f(1)=5, f(100)=5</div><p>Seu gráfico é uma reta horizontal.</p><p><b>Função identidade:</b> f(x)=x. Cada entrada retorna ela mesma. Seu gráfico é a reta y=x.</p>`},
+{id:4,title:"Função Afim",desc:"f(x)=ax+b, raiz, coeficientes e gráfico.",topics:["Coeficiente angular","Coeficiente linear","Raiz","Crescimento","Gráfico"],lesson:`<div class="formula">f(x)=ax+b</div><p><b>a</b> indica a inclinação. <b>b</b> é onde a reta corta o eixo y.</p><p>Para achar a raiz, faça f(x)=0:</p><div class="formula">ax+b=0 → x=−b/a</div><h3>Exemplo</h3><p>f(x)=2x−6 → 2x−6=0 → x=3.</p>`},
+{id:5,title:"Função Linear",desc:"Caso especial da função afim.",topics:["f(x)=ax","Origem","Proporcionalidade","Gráfico"],lesson:`<div class="formula">f(x)=ax</div><p>É uma função afim com b=0. Portanto, seu gráfico passa pela origem (0,0).</p><p>Exemplo: f(x)=3x. Se x=4, então f(4)=12.</p>`},
+{id:6,title:"Função Quadrática",desc:"Parábola, raízes, vértice, discriminante e gráfico.",topics:["ax²+bx+c","Δ","Bhaskara","Vértice","Concavidade"],lesson:`<div class="formula">f(x)=ax²+bx+c, a≠0<br>Δ=b²−4ac<br>x=(−b±√Δ)/(2a)</div><p>Se a&gt;0, a parábola tem concavidade para cima. Se a&lt;0, para baixo.</p><p>O vértice pode ser encontrado por:</p><div class="formula">xv=−b/(2a), &nbsp; yv=f(xv)</div><p>Se Δ&gt;0 há duas raízes reais; Δ=0 uma raiz real; Δ&lt;0 nenhuma raiz real.</p>`},
+{id:7,title:"Função Exponencial",desc:"Potências, crescimento e decaimento.",topics:["a^x","Base","Crescimento","Decaimento","Equações"],lesson:`<div class="formula">f(x)=a^x, a&gt;0 e a≠1</div><p>Se a&gt;1, a função cresce. Se 0&lt;a&lt;1, decresce.</p><p>Exemplo: 2^3=8. Em equações com mesma base, compare os expoentes: 2^x=2^5 → x=5.</p>`},
+{id:8,title:"Função Logarítmica",desc:"Logaritmos como operação inversa da exponencial.",topics:["Definição","Propriedades","Equações","Domínio","Gráfico"],lesson:`<div class="formula">logₐ(x)=y ⇔ a^y=x</div><p>Condições: a&gt;0, a≠1 e x&gt;0.</p><h3>Propriedades principais</h3><div class="formula">logₐ(xy)=logₐx+logₐy<br>logₐ(x/y)=logₐx−logₐy<br>logₐ(x^k)=k·logₐx</div><p>Exemplo: log₂(8)=3 porque 2³=8.</p>`},
+{id:9,title:"Noções Intuitivas de Limite",desc:"A ideia de aproximar-se de um valor.",topics:["Limite","Aproximação","Limite lateral","Continuidade"],lesson:`<p>Limite pergunta: <b>“Para qual valor f(x) está se aproximando quando x se aproxima de um número?”</b></p><div class="formula">lim(x→a) f(x)</div><p>Exemplo: se f(x)=x+2, quando x→3, f(x)→5.</p><p>Em funções simples, muitas vezes basta substituir x por a. Em expressões que geram 0/0, são necessárias técnicas como fatoração e simplificação.</p>`},
+{id:10,title:"Revisão de Cálculo 1",desc:"Mistura dos conteúdos estudados.",topics:["Classificação","Intervalos","Funções","Equações","Limites"],lesson:`<p>Use esta revisão para conectar os assuntos. Primeiro identifique o tipo de problema; depois escolha a regra adequada.</p><ol><li>Classifique números.</li><li>Resolva desigualdades e escreva intervalos.</li><li>Identifique o tipo de função.</li><li>Resolva raízes/valores.</li><li>Calcule limites simples.</li></ol>`}
+];
+
+const qs=[
+["Conjuntos","Classifique −3/5 no menor conjunto.","Q","Z","I","R"],
+["Conjuntos","Qual é o menor conjunto de √2?","I","N","Z","Q"],
+["Conjuntos","√25 pertence ao menor conjunto:","N","Z","Q","I"],
+["Intervalos","Resolva 2x+4>10.","x>3","x<3","x≥3","x≤3"],
+["Intervalos","Qual intervalo representa 1≤x<5?","[1,5)","(1,5)","[1,5]","(1,5]"],
+["Função Afim","A raiz de f(x)=2x−6 é:","3","−3","6","−6"],
+["Linear","Em f(x)=4x, f(3)=:","12","7","1","4"],
+["Quadrática","Para f(x)=x²−5x+6, as raízes são:","2 e 3","1 e 6","−2 e −3","0 e 6"],
+["Exponencial","Quanto é 2³?","8","6","9","5"],
+["Logaritmo","log₂(8) =","3","2","4","8"],
+["Limite","lim(x→3)(x+2) =","5","3","2","6"]
+];
+
+let state=JSON.parse(localStorage.getItem("calc1")||'{"done":[],"score":0}');
+function save(){localStorage.setItem("calc1",JSON.stringify(state))}
+function home(){
+let pct=Math.round(state.done.length/modules.length*100);
+app.innerHTML=`<div class="card"><span class="tag">Seu progresso</span><h2>Aprenda Cálculo 1 passo a passo</h2><p>Você concluiu ${state.done.length} de ${modules.length} módulos.</p><div class="progress"><div class="bar" style="width:${pct}%"></div></div><p><b>${pct}%</b> concluído</p></div>
+<div class="card"><h3>📚 Conteúdo incluído</h3>${modules.map(m=>`<span class="pill">${m.title}</span>`).join("")}</div>
+<div class="card"><h3>🎯 Como estudar</h3><ol><li>Leia a aula.</li><li>Faça os exercícios.</li><li>Revise os erros.</li><li>Avance para o próximo módulo.</li></ol><button onclick="lessons()">Começar aulas</button><button class="alt" onclick="practice()">Fazer exercícios</button></div>`;
+}
+function lessons(){
+app.innerHTML=`<div class="card"><h2>📚 Aulas</h2><p>Escolha um módulo para estudar.</p></div>`+modules.map(m=>`<div class="card"><div class="module"><div class="num">${m.id}</div><div><h3>${m.title}</h3><small>${m.desc}</small></div></div><button onclick="openLesson(${m.id})">Estudar</button>${state.done.includes(m.id)?'<span class="pill">✓ concluído</span>':''}</div>`).join("");
+}
+function openLesson(id){
+let m=modules.find(x=>x.id===id);
+app.innerHTML=`<div class="card"><span class="tag">Módulo ${m.id}</span><h2>${m.title}</h2><p>${m.desc}</p><h3>Você vai aprender</h3><ul>${m.topics.map(t=>`<li>${t}</li>`).join("")}</ul>${m.lesson}</div>
+<div class="card"><button onclick="finish(${id})">${state.done.includes(id)?"✓ Concluído":"Marcar como concluído"}</button><button class="alt" onclick="lessons()">Voltar</button></div>`;
+}
+function finish(id){if(!state.done.includes(id))state.done.push(id);save();openLesson(id)}
+let current=[];
+function practice(){
+current=[...qs].sort(()=>Math.random()-.5).slice(0,7);
+app.innerHTML=`<div class="card"><h2>✏️ Exercícios</h2><p>Resolva e confira na hora. Você recebeu 7 questões aleatórias.</p></div>`+current.map((q,i)=>`<div class="card"><span class="tag">${q[0]}</span><h3>${i+1}. ${q[1]}</h3>${q.slice(2).map((o,j)=>`<button class="option" onclick="answer(this,${i},${j},'${o.replace(/'/g,"\\'")}')">${String.fromCharCode(65+j)}) ${o}</button>`).join("")}<div id="r${i}"></div></div>`).join("");
+}
+function answer(btn,i,j,val){
+let card=btn.parentElement;
+if(card.dataset.done)return;
+card.dataset.done=1;
+let correct=current[i][2];
+if(val===correct){btn.classList.add("correct");state.score++;document.getElementById("r"+i).innerHTML="<p>✅ Correto!</p>"}else{btn.classList.add("wrong");[...card.querySelectorAll(".option")].forEach(b=>{if(b.textContent.includes(correct))b.classList.add("correct")});document.getElementById("r"+i).innerHTML=`<p>❌ A resposta correta é <b>${correct}</b>.</p>`}
+save();
+}
+function review(){
+let pct=Math.round(state.done.length/modules.length*100);
+app.innerHTML=`<div class="card"><h2>📊 Seu progresso</h2><p>Módulos concluídos: <b>${state.done.length}/${modules.length}</b></p><div class="progress"><div class="bar" style="width:${pct}%"></div></div><p>Acertos acumulados nesta sessão: <b>${state.score}</b></p></div>
+<div class="card"><h3>Checklist</h3>${modules.map(m=>`<p>${state.done.includes(m.id)?"✅":"⬜"} ${m.title}</p>`).join("")}</div>
+<div class="card"><button class="alt" onclick="if(confirm('Zerar progresso?')){state={done:[],score:0};save();review()}">Zerar progresso</button></div>`;
+}
+home();
+</script>
+</body></html>
